@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Sport App</string>
+    <string name="ret_text">Bentornato</string>
+    <string name="wel_text">ti da il benvenuto</string>
+    <string name="log_text">Accedi</string>
+    <string name="log_button">Login</string>
+    <string name="pass_in">Password</string>
+    <string name="user_in">Email / Username</string>
 </resources>
