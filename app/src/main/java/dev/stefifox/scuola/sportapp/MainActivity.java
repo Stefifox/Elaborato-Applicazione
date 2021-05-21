@@ -3,6 +3,7 @@ package dev.stefifox.scuola.sportapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.VoiceInteractor;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -36,17 +37,19 @@ public class MainActivity extends AppCompatActivity {
         final TextView userShow = findViewById(R.id.username);
         final TextView mailShow = findViewById(R.id.mail_text);
 
+        //Carico tutti i dati che ho in memoria
         token = loadToken();
         id = loadId();
-
-        if(token.equals(getToken(String.valueOf(id)))){
-
-        }
-
         nome = loadName();
         cognome = loadCognome();
         username = loadUsername();
         mail = loadMail();
+
+        if(id == 0){ //Se l'id è 0 avvio la procedura di Login
+            callLogin();
+        }else{
+            // TO-DO Controllo del token
+        }
 
         userShow.setText(username);
         mailShow.setText(mail);
@@ -109,6 +112,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         return responseString[0];
+    }
+
+    private void callLogin(){
+            Intent login = new Intent(MainActivity.this, Login.class);
+            startActivity(login);
+            finish(); //Termino l'activity
     }
 
 }
