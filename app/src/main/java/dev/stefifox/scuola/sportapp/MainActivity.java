@@ -2,10 +2,11 @@ package dev.stefifox.scuola.sportapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.VoiceInteractor;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -15,8 +16,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.lang.reflect.Method;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         final TextView userShow = findViewById(R.id.username);
         final TextView mailShow = findViewById(R.id.mail_text);
+        final ImageView profile = findViewById(R.id.profilebutton);
 
         //Carico tutti i dati che ho in memoria
         token = loadToken();
@@ -48,11 +48,20 @@ public class MainActivity extends AppCompatActivity {
         if(id == 0){ //Se l'id è 0 avvio la procedura di Login
             callLogin();
         }else{
-            // TO-DO Controllo del token
+
         }
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent prof = new Intent(MainActivity.this, ProfilePage.class);
+                startActivity(prof);
+            }
+        });
 
         userShow.setText(username);
         mailShow.setText(mail);
+
 
     }
 
@@ -119,5 +128,20 @@ public class MainActivity extends AppCompatActivity {
             startActivity(login);
             finish(); //Termino l'activity
     }
+
+    private void save (String data, String value){
+        SharedPreferences save = getSharedPreferences(data, MODE_PRIVATE);
+        SharedPreferences.Editor saveEdit = save.edit();
+        saveEdit.putString(data + "_", value);
+        saveEdit.apply();
+    }
+
+    private void save (String data, int value){
+        SharedPreferences save = getSharedPreferences(data, MODE_PRIVATE);
+        SharedPreferences.Editor saveEdit = save.edit();
+        saveEdit.putInt(data + "_", value);
+        saveEdit.apply();
+    }
+
 
 }

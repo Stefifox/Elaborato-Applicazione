@@ -4,6 +4,9 @@
     <string name="wel_text">ti da il benvenuto</string>
     <string name="log_text">Accedi</string>
     <string name="log_button">Login</string>
+    <string name="out_button">Esci</string>
     <string name="pass_in">Password</string>
     <string name="user_in">Email / Username</string>
+    <string name="profile_title">Il tuo profilo</string>
+    <string name="passtxt">Cambia password</string>
 </resources>
