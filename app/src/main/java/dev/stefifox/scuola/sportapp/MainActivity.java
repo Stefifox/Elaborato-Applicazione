@@ -63,6 +63,19 @@ public class MainActivity extends AppCompatActivity {
         username = loadUsername();
         mail = loadMail();
 
+        if(sport.isEmpty()){
+            getSports();
+        }else{
+            for(int i = 0; i<sport.size(); i++) {
+                Sport s = sport.get(i);
+                respLayout.addTab(respLayout.newTab().setText(s.getNome()));
+            }
+        }
+        if(squadre.isEmpty()){
+            getSquadre();
+        }else{
+            popola(1);
+        }
         if(id == 0){ //Se l'id è 0 avvio la procedura di Login
             callLogin();
         }else{
@@ -77,12 +90,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        userShow.setText(username);
+        userShow.setText(username.toUpperCase());
         mailShow.setText(mail);
-
-        getSports();
-        getSquadre();
-
 
         respLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -133,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getSports(){
         final TabLayout respLayout = findViewById(R.id.results);
+        final TextView debug = findViewById(R.id.debug);
         String sportURL = serverUrl + "/sports";
         JsonObjectRequest addSportRequest = new JsonObjectRequest(Request.Method.GET, sportURL, null, new Response.Listener<JSONObject>() {
             @Override
@@ -147,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
                         //System.out.println(id + " - " + descrizione);
                         sport.add(new Sport(id ,nome, descrizione));
                         respLayout.addTab(respLayout.newTab().setText(nome));
+                        debug.setVisibility(View.INVISIBLE);
                     }
 
                 } catch (JSONException e) {
@@ -157,6 +168,8 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                debug.setVisibility(View.VISIBLE);
+                debug.setText("Connettiti ad internet");
                 Toast.makeText(MainActivity.this, "Errore di connessione", Toast.LENGTH_SHORT).show();
             }
         });
@@ -182,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
                         String cNaz = teamsObject.getString("nazione");
                         Sport s = MainActivity.sport.get(idSport-1);
                         MainActivity.squadre.add(new Squadra(id, s, nome, cNaz));
+                        debug.setVisibility(View.INVISIBLE);
                     }
                     //debug.setText(squadre.toString());
                     popola(1);
