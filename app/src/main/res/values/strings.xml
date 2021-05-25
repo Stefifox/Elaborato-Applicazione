@@ -9,4 +9,7 @@
     <string name="user_in">Email / Username</string>
     <string name="profile_title">Il tuo profilo</string>
     <string name="passtxt">Cambia password</string>
+    <string name="registertext">Ti diamo il benvenuto</string>
+    <string name="regtext">Registrati ora</string>
+    <string name="regbutton">Registrati</string>
 </resources>
