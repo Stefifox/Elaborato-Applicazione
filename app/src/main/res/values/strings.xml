@@ -12,4 +12,7 @@
     <string name="registertext">Ti diamo il benvenuto</string>
     <string name="regtext">Registrati ora</string>
     <string name="regbutton">Registrati</string>
+    <string name="your">Squadre preferite</string>
+    <string name="register">Non hai un account? Registrati</string>
+    <string name="allsport">Tutte le squadre</string>
 </resources>

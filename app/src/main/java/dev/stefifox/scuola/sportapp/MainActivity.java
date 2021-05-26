@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     public static String serverUrl = "http://192.168.86.24:5500";
     public static ArrayList<Sport> sport = new ArrayList<>();
     public static ArrayList<Squadra> squadre = new ArrayList<>();
+    public static ArrayList<Squadra> preferite = new ArrayList<>();
 
     private String token = "n";
     private int id;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         final TextView userShow = findViewById(R.id.username);
         final TextView mailShow = findViewById(R.id.mail_text);
         final ImageView profile = findViewById(R.id.profilebutton);
+        final ImageView sportView = findViewById(R.id.sportview);
         final TabLayout respLayout = findViewById(R.id.results);
 
         final LinearLayout teamView = findViewById(R.id.teamsView);
@@ -70,17 +72,19 @@ public class MainActivity extends AppCompatActivity {
                 Sport s = sport.get(i);
                 respLayout.addTab(respLayout.newTab().setText(s.getNome()));
             }
+            respLayout.addTab(respLayout.newTab().setText("Tutte"));
         }
         if(squadre.isEmpty()){
             getSquadre();
-        }else{
-            popola(1);
         }
+
         if(id == 0){ //Se l'id è 0 avvio la procedura di Login
             callLogin();
         }else{
 
         }
+
+        popolaPref(1);
 
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,14 +94,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        sportView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent spo = new Intent(MainActivity.this, AllSport.class);
+                startActivity(spo);
+            }
+        });
+
         userShow.setText(username.toUpperCase());
         mailShow.setText(mail);
 
         respLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                int pos = respLayout.getSelectedTabPosition() + 1;
-                popola(pos);
+                    int pos = respLayout.getSelectedTabPosition() + 1;
+                    popolaPref(pos);
             }
 
             @Override
@@ -113,31 +125,39 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void popola(int pos){
-        final LinearLayout teamView = findViewById(R.id.teamsView);
+    private void popolaPref(int pos){
+        final LinearLayout result = findViewById(R.id.teamsView);
         int count = 0;
 
-        teamView.removeAllViews();
-        //System.out.println("Posizione " + pos);
-        for (int i = 0; i<squadre.size(); i++){
+        result.removeAllViews();
+        for (int i = 0; i<preferite.size(); i++){
 
             Squadra s = squadre.get(i);
             Sport sp = s.getSport();
             //System.out.println("Sport id: " + sp.getId() + " - " + sp.getDescizione() + "-" + s.getNome());
             if(sp.getId() == pos){
                 TextView temp = new TextView(MainActivity.this);
-                temp.setText(s.getNome());
-                temp.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                teamView.addView(temp);
                 count ++;
+                temp.setText(s.getNome());
+                temp.setTextSize(20);
+                temp.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                result.addView(temp);
             }
         }
         if(count == 0){
             TextView temp = new TextView(MainActivity.this);
-            temp.setText("Non ho trovato squadre");
+            temp.setText("Non ho trovato squadre preferite");
+            temp.setTextSize(20);
             temp.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            teamView.addView(temp);
+            result.addView(temp);
         }
+    }
+
+
+    //TO-DO Get preferiti
+    //Get Peferiti
+    private void getPreferiti(){
+
     }
 
     private void getSports(){
@@ -159,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                         respLayout.addTab(respLayout.newTab().setText(nome));
                         debug.setVisibility(View.INVISIBLE);
                     }
-
+                    respLayout.addTab(respLayout.newTab().setText("Tutte"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -198,7 +218,6 @@ public class MainActivity extends AppCompatActivity {
                         debug.setVisibility(View.INVISIBLE);
                     }
                     //debug.setText(squadre.toString());
-                    popola(1);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

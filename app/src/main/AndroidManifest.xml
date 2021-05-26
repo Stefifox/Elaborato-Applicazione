@@ -17,6 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AllSport"></activity>
+        <activity android:name=".Registration"></activity>
         <activity android:name=".Login"></activity>
         <activity android:name=".ProfilePage"></activity>
     </application>

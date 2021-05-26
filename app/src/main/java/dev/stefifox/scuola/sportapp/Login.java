@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,6 +41,8 @@ public class Login extends AppCompatActivity {
         final Button login = findViewById(R.id.login_button);
         final EditText mailText = findViewById(R.id.mail);
         final EditText passText = findViewById(R.id.pass);
+
+        final TextView registrer = findViewById(R.id.registertext);
 
         //Dichiaro il funzionamemto dei pulsanti
         login.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +86,15 @@ public class Login extends AppCompatActivity {
                 });
                 //Chiamo l'istanza per eseguire la richiesta
                 MySingleton.getInstance(Login.this).addToRequestQueue(request);
+            }
+        });
+
+        registrer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent reg = new Intent(Login.this, Registration.class);
+                startActivity(reg); //Avvio l'activity main
+                finish(); //Termino l'activity login
             }
         });
 
