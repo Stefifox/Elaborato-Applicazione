@@ -84,8 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        popolaPref(1);
-
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        popolaPref(1);
+
     }
 
     private void popolaPref(int pos){
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         result.removeAllViews();
         for (int i = 0; i<preferite.size(); i++){
 
-            Squadra s = squadre.get(i);
+            Squadra s = preferite.get(i);
             Sport sp = s.getSport();
             //System.out.println("Sport id: " + sp.getId() + " - " + sp.getDescizione() + "-" + s.getNome());
             if(sp.getId() == pos){
@@ -157,7 +157,33 @@ public class MainActivity extends AppCompatActivity {
     //TO-DO Get preferiti
     //Get Peferiti
     private void getPreferiti(){
+        final TextView debug = findViewById(R.id.debug);
+        String followURL = serverUrl + "/getFollow?id=" + id;
 
+        JsonObjectRequest floowRequest = new JsonObjectRequest(Request.Method.GET, followURL, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray follow = new JSONArray(response.getJSONArray("follow").toString());
+                    for(int i=0; i<follow.length(); i++){
+                        JSONObject temp = follow.getJSONObject(i);
+                        System.out.println("-" + temp.getString("nome"));
+                        int id = temp.getInt("id")-1;
+                        Squadra s = squadre.get(id);
+                        System.out.println(s.getNome());
+                        preferite.add(s);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        MySingleton.getInstance(MainActivity.this).addToRequestQueue(floowRequest);
     }
 
     private void getSports(){
@@ -217,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
                         MainActivity.squadre.add(new Squadra(id, s, nome, cNaz));
                         debug.setVisibility(View.INVISIBLE);
                     }
+                    getPreferiti();
                     //debug.setText(squadre.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
